@@ -14,7 +14,7 @@ fn main() -> Result<()> {
     if !args.colour {
     let (width, pixels) = reader::get_pixel_values_from_path(args.image.as_str(), &mut scale)?;
         for row in pixels.chunks(width as usize) {
-            let line :String = row.iter()
+            let line: String = row.iter()
                 .flat_map(|p| [ mapping::pixel_to_char(p, args.negative), ' '])
                 .collect();
             out.write_ln(line)?;
@@ -22,8 +22,8 @@ fn main() -> Result<()> {
     } else {
         let (width, pixels) = reader::get_pixels_from_path(args.image.as_str(), &mut scale)?;
         for row in pixels.chunks(width as usize) {
-            let line  :Vec<String> = row.iter()
-                .map(|p| mapping::pixel_to_colour_char(p.clone(), args.negative, args.preview))
+            let line: Vec<String> = row.iter()
+                .map(|p| mapping::pixel_to_colour_char(&mut p.clone(), args.negative, args.preview))
                 .collect();
             out.write_ln(line.concat())?;
         }

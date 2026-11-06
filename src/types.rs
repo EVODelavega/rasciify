@@ -64,6 +64,16 @@ impl From<Filter> for FilterType {
         }
     }
 }
+
+impl Pxl {
+    pub fn invert_colour(&mut self, neg: bool) {
+        if neg {
+            self.colour[0] ^= 255;
+            self.colour[1] ^= 255;
+            self.colour[2] ^= 255;
+        }
+    }
+}
  
 impl Scale {
     pub fn parse(args: &Cli) -> Scale {
@@ -75,7 +85,7 @@ impl Scale {
         }
     }
 
-    pub fn get_resize_params(self, raw_width:u32, raw_height: u32) -> (u32, u32) {
+    pub fn get_resize_params(self, raw_width: u32, raw_height: u32) -> (u32, u32) {
         let ratio = (raw_width as f32 / raw_height as f32) * self.factor;
         ((raw_width as f32 * ratio).round() as u32, (raw_height as f32 * ratio).round() as u32)
     }

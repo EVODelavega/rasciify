@@ -6,12 +6,12 @@ use std::io::{
 };
 
 pub struct Out{
-    stdout : bool,
+    stdout: bool,
     w: Box<dyn Write>,
 }
 
 impl Out {
-    pub fn new(path : &str) -> anyhow::Result<Out> {
+    pub fn new(path: &str) -> anyhow::Result<Out> {
         let w: Box<dyn Write> = if path == "stdout" {
             Box::new(io::stdout())
         } else {
@@ -30,7 +30,7 @@ impl Out {
         }
     }
 
-    pub fn write_ln(&mut self, ln : String) -> io::Result<()> {
+    pub fn write_ln(&mut self, ln: String) -> io::Result<()> {
         writeln!(self.w, "{ln}")
     }
 

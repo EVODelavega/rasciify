@@ -7,7 +7,7 @@ const CHAR_STEP : f64 = 766.0 / CHAR_MOD as f64;
 
 /// pixel_to_char maps a combined pixel value (RGB channels summed) onto ASCII_CHARS.
 /// If the neg flag is true, then the mapping is inverted.
-pub fn pixel_to_char(pixel :&u16, neg :bool) -> char {
+pub fn pixel_to_char(pixel: &u16, neg: bool) -> char {
     let offset = f64::from(*pixel) / CHAR_STEP;
     if neg {
         ASCII_CHARS[CHAR_MOD - ((offset as usize % CHAR_MOD) + 1)]
@@ -16,12 +16,15 @@ pub fn pixel_to_char(pixel :&u16, neg :bool) -> char {
     }
 }
 
-pub fn pixel_to_colour_char(pixel : types::Pxl, neg : bool, preview : bool) -> String {
+pub fn pixel_to_colour_char(pixel: &mut types::Pxl, neg: bool, preview: bool) -> String {
     let char = if preview {
+        // while we're here, let's see if we can flip the pixel
+        pixel.invert_colour(neg);
         ' '
     } else {
         pixel_to_char(&pixel.char, neg)
     };
+
     if preview {
         format!("\x1b[48;2;{};{};{}m{char} \x1b[0m", pixel.colour[0], pixel.colour[1], pixel.colour[2])
     } else {
